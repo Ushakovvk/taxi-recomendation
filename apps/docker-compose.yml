@@ -1,0 +1,42 @@
+version: "3.8"
+
+networks:
+  host:
+
+services:
+
+  frontend:
+    build:
+      context: ./dash-app
+      dockerfile: Dockerfile
+    image: dash-app:latest
+    volumes:
+        - ./dash-app/app:/app
+    environment:
+        PORT: 8080
+        WEB_CONCURRENCY: 1
+        WORKERS_PER_CORE: 1
+        VARIABLE_NAME: server
+    ports:
+    - "80:8080/tcp"
+    networks:
+    - host
+    depends_on:
+    - backend
+
+  backend:
+    build:
+      context: ./fastapi-app
+      dockerfile: Dockerfile
+    image: fastapi-app:latest
+    volumes:
+        - ./fastapi-app/app:/app
+    environment:
+        PORT: 8000
+        WEB_CONCURRENCY: 1
+        WORKERS_PER_CORE: 1
+        MAX_WORKERS: 1
+    ports:
+    - "8000:8000/tcp"
+    networks:
+    - host

@@ -1,0 +1,6 @@
+work/data/
+__pycache__
+*.ipynb_checkpoints
+.idea
+mapbox_token
+google_token
